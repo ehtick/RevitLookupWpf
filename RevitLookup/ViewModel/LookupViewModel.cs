@@ -71,7 +71,8 @@ namespace RevitLookupWpf.ViewModel
 
         public PropertyList PropertyList
         {
-            get => _propertyList; set
+            get => _propertyList; 
+            set
             {
                 if (value != null && object.ReferenceEquals(_propertyList, value))
                 {
@@ -100,7 +101,39 @@ namespace RevitLookupWpf.ViewModel
                 RaisePropertyChanged(nameof(DataSource));
             }
         }
-
+        private ICollectionView itemsView;
+        public ICollectionView ItemsView
+        {
+            get
+            {
+                if (itemsView == null)
+                {
+                    itemsView = CollectionViewSource.GetDefaultView(DataSource);
+                    itemsView.Filter = FilterSearchText;
+                }
+                return itemsView;
+            }
+            set => Set(ref itemsView, value);
+        }
+        private bool FilterSearchText(object item)
+        {
+            PropertyBase paradata = (PropertyBase)item;
+            if (!string.IsNullOrEmpty(SearchText))
+            {
+                return paradata.Name.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+            }
+            else { return true; }
+        }
+        private string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                Set(ref _searchText, value);
+                ItemsView.Refresh();
+            }
+        }
         public LookupViewModel Next { get; set; }
 
         public string Name { get; set; }

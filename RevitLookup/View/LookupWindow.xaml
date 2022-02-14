@@ -22,12 +22,11 @@
         <ResourceDictionary Source="pack://application:,,,/RevitLookupWpf;component/Themes/Generic.xaml" />
     </Window.Resources>
     <DockPanel>
-        <ScrollViewer DockPanel.Dock="Top"
-                      VerticalScrollBarVisibility="Disabled"                      
-                      >
-            <ListBox Height="25"
-                     ItemsSource="{Binding Items}"
-                     SelectedItem="{Binding LookupData}">
+        <ScrollViewer DockPanel.Dock="Top" VerticalScrollBarVisibility="Disabled">
+            <ListBox
+                Height="25"
+                ItemsSource="{Binding Items}"
+                SelectedItem="{Binding LookupData}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" />
@@ -43,16 +42,16 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding NaviName}" />
                             <Border
-                            Grid.Column="1"
-                            Width="1"
-                            HorizontalAlignment="Center"
-                            Background="LightBlue"
-                            BorderThickness="0" />
+                                Grid.Column="1"
+                                Width="1"
+                                HorizontalAlignment="Center"
+                                Background="LightBlue"
+                                BorderThickness="0" />
                             <TextBlock
-                            Grid.Column="2"
-                            FontWeight="Black"
-                            Foreground="Black">
-                            &gt;
+                                Grid.Column="2"
+                                FontWeight="Black"
+                                Foreground="Black">
+                                &gt;
                             </TextBlock>
                         </Grid>
                     </DataTemplate>
@@ -104,25 +103,58 @@
                 Background="Gray" />
             <Grid Grid.Row="0" Grid.Column="1">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="20" />
                     <RowDefinition Height="15" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
+
+                <TextBox
+                    x:Name="textBox1"
+                    Grid.Row="0"
+                    Margin="1,1,1,1"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Left"
+                    Focusable="True"
+                    Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.Resources>
+                        <VisualBrush
+                            x:Key="tbxText"
+                            AlignmentX="Left"
+                            Stretch="None"
+                            TileMode="None">
+                            <VisualBrush.Visual>
+                                <TextBlock Foreground="DimGray" Text="Search Name or Value..." />
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </TextBox.Resources>
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="BorderBrush" Value="AliceBlue" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Background" Value="{StaticResource tbxText}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
                 <TextBlock
+                    Grid.Row="1"
                     Margin="2,0,0,0"
                     Background="LightBlue"
                     Text="{Binding LookupData.PropertyList.Deri}" />
                 <controls:PropertyDataGrid
-                    Grid.Row="1"
+                    Grid.Row="2"
                     Margin="2,0,0,0"
                     EnableColumnVirtualization="True"
                     FontSize="11"
-                    SelectedItem="{Binding LookupData.SelectedProperty}"
-                    ItemsSource="{Binding LookupData.DataSource}">
+                    ItemsSource="{Binding LookupData.DataSource}"
+                    SelectedItem="{Binding LookupData.SelectedProperty}">
                     <DataGrid.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Open In New Window"
-                                                  Command="{Binding LookupData.OpenInNewWindowCommand}"/>
-                            <MenuItem Header="Search Online..." Command="{Binding LookupData.SearchOnlineCommand}"></MenuItem>
+                            <MenuItem Command="{Binding LookupData.OpenInNewWindowCommand}" Header="Open In New Window" />
+                            <MenuItem Command="{Binding LookupData.SearchOnlineCommand}" Header="Search Online..." />
                         </ContextMenu>
                     </DataGrid.ContextMenu>
                     <controls:PropertyDataGrid.GroupStyle>
@@ -164,14 +196,14 @@
                 </controls:PropertyDataGrid>
             </Grid>
             <Button
-            Grid.Row="2"
-            Grid.Column="1"
-            Margin="0,0,15,0"
-            HorizontalAlignment="Right"
-            Command="{Binding CloseCommand}"
-            Content="Close(C)"
-            FontSize="10"
-            IsCancel="True" />
-    </Grid>
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="0,0,15,0"
+                HorizontalAlignment="Right"
+                Command="{Binding CloseCommand}"
+                Content="Close(C)"
+                FontSize="10"
+                IsCancel="True" />
+        </Grid>
     </DockPanel>
 </Window>
